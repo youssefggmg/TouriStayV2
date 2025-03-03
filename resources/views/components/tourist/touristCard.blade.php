@@ -16,15 +16,17 @@
             </div>
         </div>
         <p class="text-gray-600 mb-2">
-            <i class="fas fa-map-marker-alt mr-1 text-gray-400">{{$announcment->city}}</i> 
+            <i class="fas fa-map-marker-alt mr-1 text-gray-400">{{$announcment->city}}</i>
         </p>
         <div class="text-sm text-gray-500 mb-3">{{$announcment->disponibility}}</div>
         <div class="flex justify-between items-center">
-            <div class="text-rose-600 font-semibold">${{$announcment->price}} <span class="text-gray-500 font-normal">/ night</span></div>
+            <div class="text-rose-600 font-semibold">${{$announcment->price}} <span class="text-gray-500 font-normal">/
+                    night</span></div>
             <!-- Reserve Button -->
-            <button onclick="openModal()" class="!bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition">
+            <button onclick="openModal('{{$announcment->id}}', '{{$announcment->disponibility}}')"
+                class="!bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition">
                 Reserve
-            </button>
+            </button>            
         </div>
     </div>
 </div>
@@ -39,8 +41,8 @@
 
         <h2 class="text-xl font-semibold mb-4">Book Your Stay</h2>
 
-        <label class="block text-sm font-medium text-gray-700">Select Date Range</label>
-        <input type="text" id="dateRange" class="w-full p-2 border rounded mb-3">
+        <label class="block text-sm font-medium !text-gray-700">Select Date Range</label>
+        <input type="text" id="dateRange{{$announcment->id}}" class="w-full p-2 border rounded mb-3">
 
         <label class="block text-sm font-medium text-gray-700">Payment Info</label>
         <input type="text" placeholder="Card Number" class="w-full p-2 border rounded mb-3">
@@ -55,29 +57,36 @@
 <!-- Include Flatpickr -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
 <!-- JavaScript for Modal and Calendar -->
+
 <script>
-    function openModal() {
-        document.getElementById("reservationModal").classList.remove("hidden");
+    function openModal(announcementId, disponibility) {
+        let modal = document.getElementById("reservationModal");
+        let dateInput = document.getElementById("dateRange" + announcementId); // Correctly get the input field
+
+        console.log(dateInput); // Ensure you are selecting the correct input
+
+        modal.classList.remove("hidden");
+        if (dateInput) {
+            // Initialize Flatpickr for the specific input
+            flatpickr(dateInput, {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                minDate: "today",
+                maxDate: disponibility
+            });
+        }
     }
 
     function closeModal() {
         document.getElementById("reservationModal").classList.add("hidden");
     }
 
-    // Close the modal when clicking outside
-    window.onclick = function(event) {
+    // Close modal when clicking outside
+    window.onclick = function (event) {
         let modal = document.getElementById("reservationModal");
         if (event.target === modal) {
             closeModal();
         }
     };
-
-    // Initialize Flatpickr for date range selection
-    flatpickr("#dateRange", {
-        mode: "range",
-        dateFormat: "Y-m-d",
-        minDate: "today"
-    });
 </script>
