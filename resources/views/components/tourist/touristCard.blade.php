@@ -32,6 +32,7 @@
 </div>
 
 <!-- Reservation Modal -->
+<!-- Reservation Modal (empty, to be updated dynamically) -->
 <div id="reservationModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden z-50">
     <div class="bg-white p-6 rounded-lg shadow-lg w-96 relative">
         <!-- Close Button -->
@@ -41,8 +42,8 @@
 
         <h2 class="text-xl font-semibold mb-4">Book Your Stay</h2>
 
-        <label class="block text-sm font-medium !text-gray-700">Select Date Range</label>
-        <input type="text" id="dateRange{{$announcment->id}}" class="w-full p-2 border rounded mb-3">
+        <label class="block text-sm font-medium text-gray-700">Select Date Range</label>
+        <input type="text" id="dynamicDateRange" class="w-full p-2 border rounded mb-3">
 
         <label class="block text-sm font-medium text-gray-700">Payment Info</label>
         <input type="text" placeholder="Card Number" class="w-full p-2 border rounded mb-3">
@@ -54,28 +55,28 @@
     </div>
 </div>
 
-<!-- Include Flatpickr -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 <!-- JavaScript for Modal and Calendar -->
 
 <script>
     function openModal(announcementId, disponibility) {
         let modal = document.getElementById("reservationModal");
-        let dateInput = document.getElementById("dateRange" + announcementId); // Correctly get the input field
-
-        console.log(dateInput); // Ensure you are selecting the correct input
+        let dateInput = document.getElementById("dynamicDateRange"); // Use a single input for all
 
         modal.classList.remove("hidden");
-        if (dateInput) {
-            // Initialize Flatpickr for the specific input
-            flatpickr(dateInput, {
-                mode: "range",
-                dateFormat: "Y-m-d",
-                minDate: "today",
-                maxDate: disponibility
-            });
+
+        // Remove any previous Flatpickr instance before initializing a new one
+        if (dateInput._flatpickr) {
+            dateInput._flatpickr.destroy();
         }
+
+        // Initialize Flatpickr for the selected announcement
+        flatpickr(dateInput, {
+            mode: "range",
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            maxDate: disponibility
+        });
     }
 
     function closeModal() {
