@@ -39,6 +39,7 @@ Route::middleware("isAdmine")->group(function(){
     Route::get("/admin/home", [admin::class,"index"]);
     Route::get("/admin/deletedaanoucments", [AnnouncmentController::class,"deletedAnnouncements"]);
     Route::get("/admin/owners", [admin::class,"owners"]);
+    Route::patch("/admin/disactive/{id}", [admin::class,"badUser"]);
 });
 
 require __DIR__ . '/auth.php';

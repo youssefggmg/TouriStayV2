@@ -28,8 +28,8 @@
                             <td class="py-2 px-4 border-b">{{ $owner->email }}</td>
                             <td class="py-2 px-4 border-b">{{ $owner->announcements_count }}</td>
                             <td class="py-2 px-4 border-b">
-                                @if(!$owner->is_banned)
-                                    <form action="" method="POST">
+                                @if($owner->status!=="active")
+                                    <form action="/admin/disactive/{{$owner->id}}" method="POST">
                                         @csrf
                                         @method('PATCH')
                                         <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">

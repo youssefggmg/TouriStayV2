@@ -23,4 +23,10 @@ class admin extends Controller
 
         return view('admin.owners', compact('owners'));
     }
+    public function badUser($id){
+        $user = User::find($id);
+        $user->status ="disactiv";
+        $user->save();
+        return redirect()->back();
+    }
 }
