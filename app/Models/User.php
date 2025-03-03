@@ -41,7 +41,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(announcmentModel::class, 'user_id');
     }
-
+    public function likedAnnouncements()
+    {
+        return $this->hasMany(announcmentModel::class, 'announcement_user_likes', 'user', 'announcement');
+    }
     /**
      * Get the attributes that should be cast.
      *

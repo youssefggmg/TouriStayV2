@@ -96,4 +96,15 @@ class tourist extends Controller
 
         return redirect("/tourist/editform");
     }
+    public function likeAnnouncement($id)
+    {
+        $user_id = Auth::user()->id;
+        $user = User::find($user_id);
+        $announcement = announcmentModel::find($id);
+        if (!$user->likedAnnouncements()->where('announcement', $id)->exists()) {
+            $user->likedAnnouncements()->attach($id);
+            return redirect()->back()->with('success', 'Announcement liked successfully.');
+        }
+        return redirect()->back()->with('error', 'You have already liked this announcement.');
+    }
 }

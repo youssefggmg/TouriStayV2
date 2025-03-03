@@ -26,4 +26,8 @@ class announcmentModel extends Model
     {
         return $this->belongsToMany(EquipmetModel::class, 'announcment_equipment', 'annoucment_id', 'equipment_id');
     }
+    public function likedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'announcement_user_likes', 'announcement', 'user')->withTimestamps();
+    }
 }
