@@ -30,4 +30,7 @@ class announcmentModel extends Model
     {
         return $this->belongsToMany(User::class, 'announcement_user_likes', 'announcement', 'user')->withTimestamps();
     }
+    public function Reservations(){
+        return $this->hasMany(Reservation::class,"announce_id");
+    }
 }
