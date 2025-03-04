@@ -26,7 +26,7 @@
             <button onclick="openModal('{{$announcment->id}}', '{{$announcment->disponibility}}')"
                 class="!bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition">
                 Reserve
-            </button>            
+            </button>
         </div>
     </div>
 </div>
@@ -69,13 +69,20 @@
         if (dateInput._flatpickr) {
             dateInput._flatpickr.destroy();
         }
-
+        let reservations = @json($announcment->Reservations)
+        let dates = reservatino.map((Reservation) => {
+            return {
+                form: Reservation.startDate,
+                to: Reservation.endDate
+            }
+        })
         // Initialize Flatpickr for the selected announcement
         flatpickr(dateInput, {
             mode: "range",
             dateFormat: "Y-m-d",
             minDate: "today",
             maxDate: disponibility
+            disable: dates
         });
     }
 
