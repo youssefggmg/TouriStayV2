@@ -33,25 +33,113 @@
 
 <!-- Reservation Modal -->
 <!-- Reservation Modal (empty, to be updated dynamically) -->
-<div id="reservationModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden z-50">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-96 relative">
+<div id="reservationModal" 
+     class="fixed inset-0 !bg-black bg-opacity-50 flex justify-center items-center hidden z-50" 
+     role="dialog" 
+     aria-modal="true"
+     aria-labelledby="modalTitle">
+    <div class="!bg-white p-8 rounded-xl shadow-xl w-full max-w-md relative mx-4 transition-all duration-300">
         <!-- Close Button -->
-        <button onclick="closeModal()" class="absolute top-2 right-3 text-gray-600 hover:text-gray-900 text-xl">
-            &times;
+        <button 
+            onclick="closeModal()" 
+            class="absolute top-4 right-4 !text-gray-500 hover:!text-gray-700 transition-colors"
+            aria-label="Close reservation modal">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
         </button>
 
-        <h2 class="text-xl font-semibold mb-4">Book Your Stay</h2>
+        <h2 id="modalTitle" class="text-2xl font-bold !text-gray-800 mb-6">Book Your Stay</h2>
 
-        <label class="block text-sm font-medium text-gray-700">Select Date Range</label>
-        <input type="text" id="dynamicDateRange" class="w-full p-2 border rounded mb-3">
+        <form id="reservationForm" class="space-y-6">
+            <!-- Date Range Picker -->
+            <div>
+                <label for="dynamicDateRange" class="block text-sm font-medium !text-gray-700 mb-2">
+                    Select Date Range
+                    <span class="text-red-500">*</span>
+                </label>
+                <input 
+                    type="text" 
+                    id="dynamicDateRange" 
+                    name="dates"
+                    required
+                    class="w-full px-4 py-3 border !border-gray-300 rounded-lg focus:ring-2 focus:!ring-blue-500 focus:!border-blue-500 transition-all"
+                    placeholder="Select check-in and check-out dates">
+            </div>
 
-        <label class="block text-sm font-medium text-gray-700">Payment Info</label>
-        <input type="text" placeholder="Card Number" class="w-full p-2 border rounded mb-3">
+            <!-- Payment Section -->
+            <div class="space-y-4">
+                <div>
+                    <label for="cardNumber" class="block text-sm font-medium text-gray-700 mb-2">
+                        Card Number
+                        <span class="!text-red-500">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="cardNumber" 
+                        name="cardNumber"
+                        required
+                        inputmode="numeric"
+                        pattern="[0-9\s]{13,19}"
+                        maxlength="19"
+                        placeholder="4242 4242 4242 4242"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                </div>
 
-        <div class="flex justify-end">
-            <button onclick="closeModal()" class="!bg-gray-400 text-white px-4 py-2 rounded mr-2">Cancel</button>
-            <button class="!bg-green-500 text-white px-4 py-2 rounded">Confirm Booking</button>
-        </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="expiryDate" class="block text-sm font-medium text-gray-700 mb-2">
+                            Expiry Date
+                            <span class="!text-red-500">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="expiryDate" 
+                            name="expiryDate"
+                            required
+                            placeholder="MM/YY"
+                            pattern="\d{2}/\d{2}"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                    </div>
+                    <div>
+                        <label for="cvc" class="block text-sm font-medium text-gray-700 mb-2">
+                            CVC
+                            <span class="!text-red-500">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="cvc" 
+                            name="cvc"
+                            required
+                            inputmode="numeric"
+                            pattern="\d{3}"
+                            maxlength="3"
+                            placeholder="123"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="flex justify-end space-x-4 pt-6">
+                <button 
+                    type="button"
+                    onclick="closeModal()" 
+                    class="px-6 py-2.5 !text-gray-600 hover:!text-gray-800 font-medium rounded-lg transition-colors">
+                    Cancel
+                </button>
+                <button 
+                    type="submit"
+                    class="px-6 py-2.5 !bg-blue-600 hover:!bg-blue-700 !text-white font-medium rounded-lg transition-colors focus:ring-2 focus:!ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                    id="submitButton">
+                    <span class="inline-block mr-2">Confirm Booking</span>
+                    <svg id="loadingSpinner" class="hidden w-5 h-5 !text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -69,8 +157,8 @@
         if (dateInput._flatpickr) {
             dateInput._flatpickr.destroy();
         }
-        let reservations = @json($announcment->Reservations)
-        let dates = reservatino.map((Reservation) => {
+        let reservations = @json($announcment->Reservations);
+        let dates = reservations.map((Reservation) => {
             return {
                 form: Reservation.startDate,
                 to: Reservation.endDate
@@ -81,7 +169,7 @@
             mode: "range",
             dateFormat: "Y-m-d",
             minDate: "today",
-            maxDate: disponibility
+            maxDate: disponibility,
             disable: dates
         });
     }
