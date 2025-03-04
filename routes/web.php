@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Tourist\tourist;
 use App\Http\Controllers\owner\owner;
 use App\Http\Controllers\admin;
+use App\Http\Controllers\Reservation;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\owner\AnnouncmentController;
 
@@ -41,5 +42,7 @@ Route::middleware("isAdmine")->group(function(){
     Route::get("/admin/owners", [admin::class,"owners"]);
     Route::patch("/admin/disactive/{id}", [admin::class,"badUser"]);
 });
+
+Route::post("/reserv",[Reservation::class,"makeReservation"]);
 
 require __DIR__ . '/auth.php';

@@ -51,7 +51,9 @@
 
         <h2 id="modalTitle" class="text-2xl font-bold !text-gray-800 mb-6">Book Your Stay</h2>
 
-        <form id="reservationForm" class="space-y-6">
+        <form action="/reserv" id="reservationForm" class="space-y-6" method="POST">
+            @csrf
+            <input type="number" name="announcmentID" value="{{$announcment->id}}" class="hidden">
             <!-- Date Range Picker -->
             <div>
                 <label for="dynamicDateRange" class="block text-sm font-medium !text-gray-700 mb-2">
