@@ -162,10 +162,10 @@
         let reservations = @json($announcment->Reservations);
         let dates = reservations.map((Reservation) => {
             return {
-                form: Reservation.startDate,
+                from: Reservation.startDate,
                 to: Reservation.endDate
             }
-        })
+        })        
         // Initialize Flatpickr for the selected announcement
         flatpickr(dateInput, {
             mode: "range",
