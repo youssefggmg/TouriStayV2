@@ -5,6 +5,7 @@ use App\Models\announcmentModel;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Tourist\tourist;
 use App\Http\Controllers\owner\owner;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\admin;
 use App\Http\Controllers\Reservation;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +28,7 @@ Route::middleware("istourist")->group(function () {
     Route::get("/tourist/profile", [tourist::class, "profile"]);
     Route::get("/tourist/editform", [tourist::class, "editForm"]);
     Route::patch("/tourist/edit", [tourist::class, "updateUserInfo"]);
+    Route::get('/tourist/invoice/{sessionId}', [InvoiceController::class, 'generateInvoice']);
 });
 Route::middleware("isOwner")->group(function () {
     Route::get("/owner/home", [owner::class, "index"]);

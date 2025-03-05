@@ -19,6 +19,7 @@ class Reservation extends Model
         'totale',
         'announce_id',
         'user_id',
+        "stripe_session_id"
     ];
 
     /**

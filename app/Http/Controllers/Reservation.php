@@ -42,7 +42,7 @@ class Reservation extends Controller
                     ]
                 ],
                 'mode' => 'payment',
-                'success_url' => url("/tourist/home"),
+                'success_url' => url("/tourist/invoice/{CHECKOUT_SESSION_ID}"),
                 'cancel_url' => url("/tourist/home"),
             ]);
         ReservationModel::create([
@@ -51,6 +51,7 @@ class Reservation extends Controller
             "totale"=>$announcement->price * $interval->days,
             "user_id"=>$userID,
             "announce_id"=>$request->announcmentID,
+            "stripe_session_id" => $checkoutSession->id
         ]);
         $details = [
             "name"=>Auth::user()->name,
