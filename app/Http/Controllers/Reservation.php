@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use App\Models\announcmentModel;
+use App\Models\Reservation as ReservationModel;
+use Illuminate\Support\Facades\Auth;
 use \Datetime;
 
 class Reservation extends Controller
@@ -20,9 +22,9 @@ class Reservation extends Controller
         // Convert them to DateTime objects
         $start = new DateTime($startDate);
         $end = new DateTime($endDate);
-
         // Calculate the difference
         $interval = $start->diff($end);
+        $userID = Auth::user()->id;
         Stripe::setApiKey(env('STRIPE_SECRET'));
         $announcement = announcmentModel::find($request->announcmentID);
         $checkoutSession = Session::create([
@@ -39,11 +41,18 @@ class Reservation extends Controller
                     'quantity' => $interval->days,
                 ]
             ],
+            "metadata",
             'mode' => 'payment',
             'success_url' => url("/tourist/home"),
             'cancel_url' => url("/tourist/home"),
         ]);
-        
+        ReservationModel::create([
+            "startDate"=>$start,
+            "endDate"=>$end,
+            "totale"=>$announcement->price * $interval->days,
+            "userID"=>$userID,
+            "announcmentID"=>$request->announcmentID,
+        ]);
         return redirect($checkoutSession->url);
     }
 }
