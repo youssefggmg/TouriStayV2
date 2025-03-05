@@ -34,6 +34,9 @@
                 <a href="/tourist/favorit" class="text-gray-800 hover:text-rose-500 px-3 py-2 rounded-md text-sm font-medium">
                     <i class="fas fa-heart mr-1"></i> Favorites
                 </a>
+                <a href="/tourist/favorit" class="text-gray-800 hover:text-rose-500 px-3 py-2 rounded-md text-sm font-medium">
+                    <i class="fas fa-heart mr-1"></i> myReservations
+                </a>
 
                 <!-- Profile Dropdown -->
                 <div x-data="{ open: false }" class="relative">
