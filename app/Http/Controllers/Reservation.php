@@ -9,23 +9,23 @@ use App\Models\announcmentModel;
 use App\Models\Reservation as ReservationModel;
 use Illuminate\Support\Facades\Auth;
 use \Datetime;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\confirmReservation;
 
 class Reservation extends Controller
 {
     public function makeReservation(Request $request)
     {
+        Stripe::setApiKey(env('STRIPE_SECRET'));
         $dates = $request->dates;
-
         // Extract the two dates
         list($startDate, $endDate) = explode(" to ", $dates);
-
         // Convert them to DateTime objects
         $start = new DateTime($startDate);
         $end = new DateTime($endDate);
         // Calculate the difference
         $interval = $start->diff($end);
         $userID = Auth::user()->id;
-        Stripe::setApiKey(env('STRIPE_SECRET'));
         $announcement = announcmentModel::find($request->announcmentID);
         $checkoutSession = Session::create([
             'payment_method_types' => ['card'],
@@ -39,20 +39,27 @@ class Reservation extends Controller
                         'unit_amount' => $announcement->price * 100,  // Convert price to cents
                     ],
                     'quantity' => $interval->days,
-                ]
-            ],
-            "metadata",
-            'mode' => 'payment',
-            'success_url' => url("/tourist/home"),
-            'cancel_url' => url("/tourist/home"),
-        ]);
+                    ]
+                ],
+                'mode' => 'payment',
+                'success_url' => url("/tourist/home"),
+                'cancel_url' => url("/tourist/home"),
+            ]);
         ReservationModel::create([
-            "startDate"=>$start,
-            "endDate"=>$end,
+            "startDate"=>$startDate,
+            "endDate"=>$endDate,
             "totale"=>$announcement->price * $interval->days,
-            "userID"=>$userID,
-            "announcmentID"=>$request->announcmentID,
+            "user_id"=>$userID,
+            "announce_id"=>$request->announcmentID,
         ]);
+        $details = [
+            "name"=>Auth::user()->name,
+            "announcmentName"=>$announcement->title,
+            "startDate"=>$startDate,
+            "endDate"=>$endDate,
+            "totale"=>$announcement->price * $interval->days,
+        ];
+        Mail::to(Auth::user()->email)->send(new confirmReservation($details));
         return redirect($checkoutSession->url);
     }
 }
