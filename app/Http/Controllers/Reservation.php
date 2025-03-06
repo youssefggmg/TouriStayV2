@@ -27,6 +27,7 @@ class Reservation extends Controller
         $interval = $start->diff($end);
         $userID = Auth::user()->id;
         $announcement = announcmentModel::find($request->announcmentID);
+        $owner = announcmentModel::find($request->announcmentID)->owner()->first();
         $checkoutSession = Session::create([
             'payment_method_types' => ['card'],
             'line_items' => [
@@ -39,28 +40,39 @@ class Reservation extends Controller
                         'unit_amount' => $announcement->price * 100,  // Convert price to cents
                     ],
                     'quantity' => $interval->days,
-                    ]
-                ],
-                'mode' => 'payment',
-                'success_url' => url("/tourist/invoice/{CHECKOUT_SESSION_ID}"),
-                'cancel_url' => url("/tourist/home"),
-            ]);
+                ]
+            ],
+            'mode' => 'payment',
+            'success_url' => url("/tourist/invoice/{CHECKOUT_SESSION_ID}"),
+            'cancel_url' => url("/tourist/home"),
+        ]);
         ReservationModel::create([
-            "startDate"=>$startDate,
-            "endDate"=>$endDate,
-            "totale"=>$announcement->price * $interval->days,
-            "user_id"=>$userID,
-            "announce_id"=>$request->announcmentID,
+            "startDate" => $startDate,
+            "endDate" => $endDate,
+            "totale" => $announcement->price * $interval->days,
+            "user_id" => $userID,
+            "announce_id" => $request->announcmentID,
             "stripe_session_id" => $checkoutSession->id
         ]);
         $details = [
-            "name"=>Auth::user()->name,
-            "announcmentName"=>$announcement->title,
-            "startDate"=>$startDate,
-            "endDate"=>$endDate,
-            "totale"=>$announcement->price * $interval->days,
+            "name" => Auth::user()->name,
+            "announcmentName" => $announcement->title,
+            "startDate" => $startDate,
+            "endDate" => $endDate,
+            "totale" => $announcement->price * $interval->days,
         ];
-        Mail::to(Auth::user()->email)->send(new confirmReservation($details));
+        $ownerDetails = [
+            'ownerName' => $owner->name,
+            'announcmentName' => $announcement->name,
+            'renterName' => Auth::user()->name,
+            'renterEmail' => Auth::user()->email,
+            'renterPhone' => '0612729345',
+            "startDate" => $startDate,
+            "endDate" => $endDate,
+            "totale" => $announcement->price * $interval->days,
+        ];
+        Mail::to(Auth::user()->email)->send(new confirmReservation($details, "turist"));
+        Mail::to($owner->email)->send(new confirmReservation($$ownerDetails, "owner"));
         return redirect($checkoutSession->url);
     }
 }

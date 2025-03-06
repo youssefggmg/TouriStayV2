@@ -17,9 +17,11 @@ class confirmReservation extends Mailable
      * Create a new message instance.
      */
     private $details;
-    public function __construct($details)
+    private $role;
+    public function __construct($details , $role)
     {
         $this->details = $details;
+        $this->role = $role;
     }
 
     /**
@@ -33,10 +35,18 @@ class confirmReservation extends Mailable
     }
     public function build()
     {
-        return $this->from("elhoubiyoussef@gmail.com")
-                    ->subject("conferm Reservation")
-                    ->view("mail.conferm-mail")
-                    ->with("details",$this->details);
+        if ($this->role == "turist") {
+            return $this->from("elhoubiyoussef@gmail.com")
+                        ->subject("conferm Reservation")
+                        ->view("mail.conferm-mail")
+                        ->with("details",$this->details);
+        }
+        elseif($this->role == "owner"){
+            return $this->from("elhoubiyoussef@gmail.com")
+                        ->subject("Reservation noification")
+                        ->view("mail.resrvation-mail")
+                        ->with("details",$this->details);
+        }
     }
 
     /**

@@ -24,7 +24,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware("istourist")->group(function () {
     Route::get("/tourist/home/{perpage?}", [tourist::class, "index"]);
     Route::get("/search", [tourist::class, "search"]);
-    Route::get("/test", [tourist::class, "editForm"]);
+    
     Route::get("/tourist/profile", [tourist::class, "profile"]);
     Route::get("/tourist/editform", [tourist::class, "editForm"]);
     Route::patch("/tourist/edit", [tourist::class, "updateUserInfo"]);
@@ -47,5 +47,8 @@ Route::middleware("isAdmine")->group(function(){
 });
 
 Route::post("/reserv",[Reservation::class,"makeReservation"]);
+Route::get("/test",function(){
+    dd(announcmentModel::find(1)->owner()->first());
+});
 
 require __DIR__ . '/auth.php';
