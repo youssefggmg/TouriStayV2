@@ -29,6 +29,7 @@ Route::middleware("istourist")->group(function () {
     Route::get("/tourist/editform", [tourist::class, "editForm"]);
     Route::patch("/tourist/edit", [tourist::class, "updateUserInfo"]);
     Route::get('/tourist/invoice/{sessionId}', [InvoiceController::class, 'generateInvoice']);
+    Route::get("/tourist/reservations",[tourist::class,"myReservations"]);
 });
 Route::middleware("isOwner")->group(function () {
     Route::get("/owner/home", [owner::class, "index"]);

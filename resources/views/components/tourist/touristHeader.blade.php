@@ -34,7 +34,7 @@
                 <a href="/tourist/favorit" class="text-gray-800 hover:text-rose-500 px-3 py-2 rounded-md text-sm font-medium">
                     <i class="fas fa-heart mr-1"></i> Favorites
                 </a>
-                <a href="/tourist/favorit" class="text-gray-800 hover:text-rose-500 px-3 py-2 rounded-md text-sm font-medium">
+                <a href="/tourist/reservations" class="text-gray-800 hover:text-rose-500 px-3 py-2 rounded-md text-sm font-medium">
                     <i class="fas fa-heart mr-1"></i> myReservations
                 </a>
 

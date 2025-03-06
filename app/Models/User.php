@@ -43,7 +43,7 @@ class User extends Authenticatable
     }
     public function likedAnnouncements()
     {
-        return $this->hasMany(announcmentModel::class, 'announcement_user_likes', 'user', 'announcement');
+        return $this->hasMany(announcmentModel::class, 'announcement_user_likes','announcement');
     }
     public function Reservations(){
         return $this->hasMany(Reservation::class,"user_id");

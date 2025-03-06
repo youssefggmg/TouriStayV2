@@ -107,4 +107,9 @@ class tourist extends Controller
         }
         return redirect()->back()->with('error', 'You have already liked this announcement.');
     }
+    public function myReservations(){
+        $user = Auth::user();
+        $reservations= Auth::user()->Reservations()->with("announcement")->get();
+        return view("tourist.myreservation",compact("user","reservations"));
+    }
 }

@@ -27,7 +27,7 @@ class Reservation extends Model
      */
     public function announcement()
     {
-        return $this->belongsTo(announcmentModel::class, 'announce_id');
+        return $this->belongsTo(announcmentModel::class, 'announce_id', 'id');
     }
 
     /**
@@ -35,6 +35,6 @@ class Reservation extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id', "id");
     }
 }
