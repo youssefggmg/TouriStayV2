@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Models\announcmentModel;
+use App\Models\Reservation as ReservationModel;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Tourist\tourist;
 use App\Http\Controllers\owner\owner;
@@ -47,8 +47,6 @@ Route::middleware("isAdmine")->group(function(){
 });
 
 Route::post("/reserv",[Reservation::class,"makeReservation"]);
-Route::get("/test",function(){
-    dd(announcmentModel::find(1)->owner()->first());
-});
+Route::get("/test",[admin::class,"reservations"]);
 
 require __DIR__ . '/auth.php';

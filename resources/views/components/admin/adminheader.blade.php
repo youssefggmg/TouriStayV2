@@ -17,10 +17,10 @@
                 <a href="/owner/home" class="text-gray-800 hover:text-rose-500 px-3 py-2 rounded-md text-sm font-medium">
                     <i class="fas fa-home mr-1"></i> Home
                 </a>
-                <a href="/announcments/create" class="text-gray-800 hover:text-rose-500 px-3 py-2 rounded-md text-sm font-medium">
+                <a href="/admin/deletedaanoucments" class="text-gray-800 hover:text-rose-500 px-3 py-2 rounded-md text-sm font-medium">
                     <i class="fa-solid fa-trash fa-sm" style="color: #183153;"></i> deleted announcment
                 </a>
-                <a href="/announcments/create" class="text-gray-800 hover:text-rose-500 px-3 py-2 rounded-md text-sm font-medium">
+                <a href="/admin/owners" class="text-gray-800 hover:text-rose-500 px-3 py-2 rounded-md text-sm font-medium">
                     <i class="fa-solid fa-user fa-sm" style="color: #183153;"></i> user
                 </a>
 
