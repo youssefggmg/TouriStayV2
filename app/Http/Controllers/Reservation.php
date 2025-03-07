@@ -72,7 +72,7 @@ class Reservation extends Controller
             "totale" => $announcement->price * $interval->days,
         ];
         Mail::to(Auth::user()->email)->send(new confirmReservation($details, "turist"));
-        Mail::to($owner->email)->send(new confirmReservation($$ownerDetails, "owner"));
+        Mail::to($owner->email)->send(new confirmReservation($ownerDetails, "owner"));
         return redirect($checkoutSession->url);
     }
 }
